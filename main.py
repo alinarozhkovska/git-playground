@@ -1,7 +1,6 @@
 import words_fetcher
 import random
 
-
 def congratulate_user():
     print("=============================")
     print("= Congratulations! You won! =")
@@ -34,6 +33,7 @@ ERRORS_TO_LOSE = 3
 
 words = words_fetcher.fetch_words(min_letters=9, max_letters=9)
 full_list = words_fetcher.fetch_words(min_letters=3, max_letters=9)
+
 word = words[random.randrange(0, len(words))]
 
 print(f"Can you make up {WORDS_TO_WIN} words from letters in word provided by me?")
@@ -43,16 +43,21 @@ print(f"Your word is '{word}'")
 while not is_game_over():
     guess = input("Your next take: ")
 
+
+
     if not guess_is_valid(guess):
         continue
 
-    if guess in full_list:
+    if guess in full_list and guess not in guesses:
         guessed += 1
         guesses.append(guess)
         if guessed == WORDS_TO_WIN:
             congratulate_user()
             exit()
         print(f"That's right! {WORDS_TO_WIN - guessed} to go")
+    elif guess in guesses:
+        print("You have already used that word")
+        continue
     else:
         errors += 1
         print(f"Oops :( No such word, you have {ERRORS_TO_LOSE - errors} lives more")
